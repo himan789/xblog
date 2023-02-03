@@ -1,0 +1,35 @@
+{% extends "./base.html" %}
+
+{% block title %}
+    {% if tag %}
+    标签列表页：{{ tag.name }}
+    {% elif category %}
+    分类列表页：{{ category.name }}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <u1>
+        {% for post in post_list %}
+        <li>
+            <a href="{% url 'post-detail' post.id %}">{{ post.title }}</a>
+<!--                <a href="/post/{{post.id}}/">{{ post.title }}</a>-->
+            <div>
+                <span>作者:{{ post.owner.username }}</span>
+                <span>分类:{{ post.category.name }}</span>
+            </div>
+            <p>{{ post.desc }}</p>
+        </li>
+        {% endfor %}
+        {% if page_obj %}
+<!--        分页https://docs.djangoproject.com/zh-hans/4.1/ref/paginator/-->
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+            {% endif %}
+            Page {{page_obj.number}} of {{paginator.num_pages}} .
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+            {% endif %}
+        {% endif %}
+    </u1>
+{% endblock %}
